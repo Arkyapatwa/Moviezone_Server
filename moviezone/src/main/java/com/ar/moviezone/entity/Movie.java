@@ -1,11 +1,16 @@
 package com.ar.moviezone.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class Movie {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer movieId;
 
 	private String name;
@@ -14,7 +19,8 @@ public class Movie {
 	
 	private String language;
 	
-	private String type;
+	@Enumerated(EnumType.STRING)
+	private String movieType;
 	
 	public Integer getMovieId() {
 		return movieId;
@@ -48,11 +54,13 @@ public class Movie {
 		this.language = language;
 	}
 
-	public String getType() {
-		return type;
+	public String getMovieType() {
+		return movieType;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setMovieType(String movieType) {
+		this.movieType = movieType;
 	}
+
+	
 }

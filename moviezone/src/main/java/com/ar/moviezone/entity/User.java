@@ -6,11 +6,9 @@ import jakarta.persistence.Id;
 @Entity
 public class User {
 	@Id
-	private Integer userId;
+	private String emailId;
 	
 	private String name;
-	
-	private String emailId;
 	
 	private String password;
 	
@@ -18,13 +16,6 @@ public class User {
 	
 	private String address;
 
-	public Integer getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
 
 	public String getName() {
 		return name;

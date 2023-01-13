@@ -6,7 +6,7 @@ public class MovieDTO {
 	private String name;
 	private String movieLength;
 	private String language;
-	private String type;
+	private String movieType;
 	
 	public Integer getMovieId() {
 		return movieId;
@@ -32,12 +32,13 @@ public class MovieDTO {
 	public void setLanguage(String language) {
 		this.language = language;
 	}
-	public String getType() {
-		return type;
+	public String getMovieType() {
+		return movieType;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setMovieType(String movieType) {
+		this.movieType = movieType;
 	}
+	
 	
 	
 }

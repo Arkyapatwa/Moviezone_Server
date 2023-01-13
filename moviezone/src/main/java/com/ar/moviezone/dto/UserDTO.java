@@ -2,19 +2,12 @@ package com.ar.moviezone.dto;
 
 public class UserDTO {
 	
-	private Integer userId;
 	private String name;
 	private String emailId;
 	private String password;
 	private String phoneNumber;
 	private String address;
 	
-	public Integer getUserId() {
-		return userId;
-	}
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
 	public String getName() {
 		return name;
 	}

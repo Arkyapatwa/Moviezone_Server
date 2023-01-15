@@ -1,5 +1,6 @@
 package com.ar.moviezone.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,21 @@ public class UserMovieServiceImpl implements UserMovieService {
 	
 	@Override
 	public List<MovieDTO> getAllMovies(){
-		return null;
+		Iterable<Movie> movies = movieRepository.findAll();
+		List<MovieDTO> movieDTOs = new ArrayList<>();
+		
+		movies.forEach(movie->{
+			MovieDTO movieDTO = new MovieDTO();
+			
+			movieDTO.setLanguage(movie.getLanguage());
+			movieDTO.setMovieId(movie.getMovieId());
+			movieDTO.setMovieLength(movie.getMovieLength());
+			movieDTO.setMovieType(movie.getMovieType());
+			movieDTO.setName(movie.getName());
+			
+			movieDTOs.add(movieDTO);
+		});
+		return movieDTOs;
 	}
 	
 	@Override

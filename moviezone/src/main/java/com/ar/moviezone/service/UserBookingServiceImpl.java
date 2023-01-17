@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.ar.moviezone.dto.BookingDTO;
 import com.ar.moviezone.dto.MovieDTO;
 import com.ar.moviezone.repository.BookingRepository;
+import com.ar.moviezone.repository.MovieRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -25,6 +26,7 @@ public class UserBookingServiceImpl implements UserBookingService{
 	
 	@Override
 	public List<BookingDTO> findBookingByUserEmailId(String emailId){
+		
 		return null;
 	}
 	

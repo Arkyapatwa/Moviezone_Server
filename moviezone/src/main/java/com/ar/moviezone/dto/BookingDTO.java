@@ -1,0 +1,53 @@
+package com.ar.moviezone.dto;
+
+import java.time.LocalDate;
+
+public class BookingDTO {
+	
+	private Integer bookingId;
+	private LocalDate bookingDate;
+	private Double totalPrice;
+	private String bookingStatus;
+	private MovieDTO movie;
+	private String type;
+	
+	public Integer getBookingId() {
+		return bookingId;
+	}
+	public void setBookingId(Integer bookingId) {
+		this.bookingId = bookingId;
+	}
+	public LocalDate getBookingDate() {
+		return bookingDate;
+	}
+	public void setBookingDate(LocalDate bookingDate) {
+		this.bookingDate = bookingDate;
+	}
+	public Double getTotalPrice() {
+		return totalPrice;
+	}
+	public void setTotalPrice(Double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+	public String getBookingStatus() {
+		return bookingStatus;
+	}
+	public void setBookingStatus(String bookingStatus) {
+		this.bookingStatus = bookingStatus;
+	}
+	public MovieDTO getMovie() {
+		return movie;
+	}
+	public void setMovie(MovieDTO movie) {
+		this.movie = movie;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	
+	
+}

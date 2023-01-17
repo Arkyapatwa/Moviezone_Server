@@ -1,5 +1,7 @@
 package com.ar.moviezone.entity;
 
+import com.ar.moviezone.dto.MovieType;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -20,7 +22,7 @@ public class Movie {
 	private String language;
 	
 	@Enumerated(EnumType.STRING)
-	private String movieType;
+	private MovieType movieType;
 	
 	public Integer getMovieId() {
 		return movieId;
@@ -54,11 +56,11 @@ public class Movie {
 		this.language = language;
 	}
 
-	public String getMovieType() {
+	public MovieType getMovieType() {
 		return movieType;
 	}
 
-	public void setMovieType(String movieType) {
+	public void setMovieType(MovieType movieType) {
 		this.movieType = movieType;
 	}
 

@@ -12,5 +12,7 @@ public class LoginController {
 		System.out.println("Inside login controller");
 		return "login page rendered";
 	}
+	
+	
 
 }

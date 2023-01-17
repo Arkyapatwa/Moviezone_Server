@@ -2,6 +2,7 @@ package com.ar.moviezone.entity;
 
 import java.time.LocalDate;
 
+import com.ar.moviezone.dto.BookingStatus;
 import com.ar.moviezone.dto.MovieDTO;
 
 import jakarta.persistence.CascadeType;
@@ -26,11 +27,11 @@ public class Booking {
 	private Double totalPrice;
 	
 	@Enumerated(EnumType.STRING)
-	private String bookingStatus;
+	private BookingStatus bookingStatus;
 	
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="movieId")
-	private MovieDTO movie;
+	private Movie movie;
 	
 	private String type;
 
@@ -58,19 +59,19 @@ public class Booking {
 		this.totalPrice = totalPrice;
 	}
 
-	public String getBookingStatus() {
+	public  BookingStatus getBookingStatus() {
 		return bookingStatus;
 	}
 
-	public void setBookingStatus(String bookingStatus) {
+	public void setBookingStatus(BookingStatus bookingStatus) {
 		this.bookingStatus = bookingStatus;
 	}
 
-	public MovieDTO getMovie() {
+	public Movie getMovie() {
 		return movie;
 	}
 
-	public void setMovie(MovieDTO movie) {
+	public void setMovie(Movie movie) {
 		this.movie = movie;
 	}
 

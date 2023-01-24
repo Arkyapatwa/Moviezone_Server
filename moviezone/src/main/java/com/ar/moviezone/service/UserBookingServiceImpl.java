@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.ar.moviezone.dto.BookingDTO;
 import com.ar.moviezone.dto.MovieDTO;
+import com.ar.moviezone.entity.Booking;
+import com.ar.moviezone.entity.User;
+import com.ar.moviezone.exception.MovieZoneException;
 import com.ar.moviezone.repository.BookingRepository;
 import com.ar.moviezone.repository.MovieRepository;
 
@@ -25,7 +28,13 @@ public class UserBookingServiceImpl implements UserBookingService{
 	}
 	
 	@Override
-	public List<BookingDTO> findBookingByUserEmailId(String emailId){
+	public List<BookingDTO> findBookingByUserEmailId(String emailId) throws MovieZoneException{
+		List<Booking> bookings = bookingRepository.findByUserEmailId(emailId);
+		
+		if (bookings.isEmpty())
+			throw new MovieZoneException("UserBookinService.BOOKING_NOT_FOUND");
+		
+		
 		
 		return null;
 	}

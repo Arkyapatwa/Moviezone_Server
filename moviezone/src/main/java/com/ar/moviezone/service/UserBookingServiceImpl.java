@@ -32,7 +32,7 @@ public class UserBookingServiceImpl implements UserBookingService{
 		List<Booking> bookings = bookingRepository.findByUserEmailId(emailId);
 		
 		if (bookings.isEmpty())
-			throw new MovieZoneException("UserBookinService.BOOKING_NOT_FOUND");
+			throw new MovieZoneException("UserBookingService.BOOKING_NOT_FOUND");
 		
 		
 		

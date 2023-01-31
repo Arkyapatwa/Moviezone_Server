@@ -2,12 +2,14 @@ package com.ar.moviezone.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ar.moviezone.dto.MovieDTO;
 import com.ar.moviezone.entity.Movie;
+import com.ar.moviezone.exception.MovieZoneException;
 import com.ar.moviezone.repository.MovieRepository;
 
 import jakarta.transaction.Transactional;
@@ -39,7 +41,18 @@ public class UserMovieServiceImpl implements UserMovieService {
 	}
 	
 	@Override
-	public MovieDTO getMovieById(Integer movieId) {
-		return null;
+	public MovieDTO getMovieById(Integer movieId) throws MovieZoneException {
+		Optional<Movie> movieOp = movieRepository.findById(movieId);
+		
+		Movie movie = movieOp.orElseThrow(()->new MovieZoneException("UserMovieService.MOVIE_NOT_FOUND"));
+		
+		MovieDTO movieDTO = new MovieDTO();
+		movieDTO.setLanguage(movie.getLanguage());
+		movieDTO.setMovieId(movieId);
+		movieDTO.setMovieLength(movie.getMovieLength());
+		movieDTO.setName(movie.getName());
+		movieDTO.setMovieType(movie.getMovieType());
+		
+		return movieDTO;
 	}
 }

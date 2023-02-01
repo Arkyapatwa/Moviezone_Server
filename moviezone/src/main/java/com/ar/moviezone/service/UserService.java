@@ -6,7 +6,7 @@ public interface UserService {
 	
 	UserDTO userAuthentication(String emailId, String Password);
 	
-	UserDTO getUserByEmailId(String emailId);
+	UserDTO getUserByEmailId(String emailId);      
 	
 	String registerNewUser(UserDTO userDTO);
 }

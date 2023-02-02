@@ -1,12 +1,25 @@
-package com.ar.moviezone.dto;
+package com.ar.moviezone.entity;
 
 import java.time.LocalDate;
 
-public class PaymentDTO {
+import com.ar.moviezone.dto.TransactionStatus;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class Payment {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer paymentId;
+	@Enumerated(EnumType.STRING)
 	private TransactionStatus transactionStatus;
-	private BookingDTO booking;
+	private Integer bookingId;
 	private Double totalPrice;
 	private LocalDate paymentDate;
 	
@@ -22,11 +35,11 @@ public class PaymentDTO {
 	public void setTransactionStatus(TransactionStatus transactionStatus) {
 		this.transactionStatus = transactionStatus;
 	}
-	public BookingDTO getBooking() {
-		return booking;
+	public Integer getBookingId() {
+		return bookingId;
 	}
-	public void setBooking(BookingDTO booking) {
-		this.booking = booking;
+	public void setBookingId(Integer bookingId) {
+		this.bookingId = bookingId;
 	}
 	public Double getTotalPrice() {
 		return totalPrice;

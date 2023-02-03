@@ -1,5 +1,9 @@
 package com.ar.moviezone.service;
 
-public interface PaymentService {
+import com.ar.moviezone.dto.PaymentDTO;
+import com.ar.moviezone.exception.MovieZoneException;
 
+public interface PaymentService {
+	
+	PaymentDTO authenticatePayment(String custEmailId, PaymentDTO paymentDTO) throws MovieZoneException;
 }

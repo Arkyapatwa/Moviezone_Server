@@ -9,5 +9,5 @@ public interface UserService {
 	
 	UserDTO getUserByEmailId(String emailId) throws MovieZoneException;      
 	
-	String registerNewUser(UserDTO userDTO);
+	String registerNewUser(UserDTO userDTO) throws MovieZoneException;
 }

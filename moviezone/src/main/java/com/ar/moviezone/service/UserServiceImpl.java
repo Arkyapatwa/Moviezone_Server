@@ -40,7 +40,33 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public String registerNewUser(UserDTO userDTO) {
-		return null;
+	public String registerNewUser(UserDTO userDTO) throws MovieZoneException {
+		
+		boolean userEmailIdNotPresent = userRepository.findById(userDTO.getEmailId().toLowerCase()).isEmpty();
+//		checking if email already present with any other user
+		
+		boolean userPhoneNumberNotPresent = userRepository.findByPhoneNumber(userDTO.getPhoneNumber()).isEmpty();
+//		checking if phone already present with any other user
+		
+		String registeredEmailId =null;
+		
+		if (userEmailIdNotPresent) {
+			if (userPhoneNumberNotPresent) {
+				User user = new User();
+				user.setAddress(userDTO.getAddress());
+				user.setEmailId(userDTO.getEmailId().toLowerCase());
+				user.setName(userDTO.getName());
+				user.setPassword(userDTO.getPassword());
+				user.setPhoneNumber(userDTO.getPhoneNumber());
+				userRepository.save(user);
+				
+				registeredEmailId = userDTO.getEmailId();
+			} else {
+				throw new MovieZoneException("UserService.PHONE_ALREADY_AVAILABLE");
+			}
+		} else {
+			throw new MovieZoneException("UserService.EMAIL_ALREADY_AVAILABLE");
+		}
+		return registeredEmailId;
 	}
 }

@@ -1,5 +1,6 @@
 package com.ar.moviezone.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +35,31 @@ public class UserBookingServiceImpl implements UserBookingService{
 		if (bookings.isEmpty())
 			throw new MovieZoneException("UserBookingService.BOOKING_NOT_FOUND");
 		
+		List<BookingDTO> bookingDTOs = new ArrayList<>();
 		
+		for (Booking booking : bookings) {
+			
+			BookingDTO bookingDTO = new BookingDTO();
+			bookingDTO.setBookingDate(booking.getBookingDate());
+			bookingDTO.setBookingId(booking.getBookingId());
+			bookingDTO.setBookingStatus(booking.getBookingStatus().toString());
+			bookingDTO.setTotalPrice(booking.getTotalPrice());
+			bookingDTO.setType(booking.getType());
+			bookingDTO.setUserEmailId(booking.getUserEmailId());
+			
+			MovieDTO movieDTO = new MovieDTO();
+			movieDTO.setLanguage(booking.getMovie().getLanguage());
+			movieDTO.setMovieId(booking.getMovie().getMovieId());
+			movieDTO.setMovieLength(booking.getMovie().getMovieLength());
+			movieDTO.setMovieType(booking.getMovie().getMovieType());
+			movieDTO.setName(booking.getMovie().getName());
+			
+			bookingDTO.setMovie(movieDTO);
+			
+			bookingDTOs.add(bookingDTO);
+		}
 		
-		return null;
+		return bookingDTOs;
 	}
 	
 }

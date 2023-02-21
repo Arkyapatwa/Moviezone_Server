@@ -29,4 +29,6 @@ public class UserController {
 		registerEmailId = environment.getProperty("") + registerEmailId;
 		return new ResponseEntity<>(registerEmailId, HttpStatus.OK);
 	}
+	
+	
 }

@@ -5,7 +5,7 @@ import com.ar.moviezone.exception.MovieZoneException;
 
 public interface UserService {
 	
-	UserDTO userAuthentication(String emailId, String Password);
+	UserDTO userAuthentication(String emailId, String password) throws MovieZoneException;
 	
 	UserDTO getUserByEmailId(String emailId) throws MovieZoneException;      
 	

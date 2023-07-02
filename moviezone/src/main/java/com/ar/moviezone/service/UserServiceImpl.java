@@ -20,8 +20,23 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
 	
 	@Override
-	public UserDTO userAuthentication(String emailId, String Password) {
-		return null;
+	public UserDTO userAuthentication(String emailId, String password) throws MovieZoneException {
+		UserDTO userDTO = null;
+		Optional <User> userOp = userRepository.findById(emailId);
+		User user = userOp.orElseThrow(()->new MovieZoneException("UserService.USER_NOT_AVAILABLE"));
+		
+		if (!password.equals(user.getPassword())) {
+			throw new MovieZoneException("UserService.INVALID_CREDENTIALS");
+		}
+		
+		userDTO = new UserDTO();
+		userDTO.setName(user.getName());
+		userDTO.setEmailId(emailId);
+		userDTO.setPassword(password);
+		userDTO.setAddress(user.getAddress());
+		userDTO.setPhoneNumber(user.getPhoneNumber());
+		
+		return userDTO;
 	}
 	
 	@Override

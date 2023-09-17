@@ -27,7 +27,7 @@ public class UserController {
 	@Autowired
 	private Environment environment;
 	
-	@GetMapping("/login")
+	@PostMapping("/login")
 	public ResponseEntity<UserDTO> authenticateUser(@RequestBody UserCredentialsDTO userCredDTO) throws MovieZoneException {
 		UserDTO userDTOfetched = userService.userAuthentication(userCredDTO.getEmailId(), userCredDTO.getPassword());
 		return new ResponseEntity<>(userDTOfetched, HttpStatus.OK);

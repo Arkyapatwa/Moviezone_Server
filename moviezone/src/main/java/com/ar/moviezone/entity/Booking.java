@@ -3,7 +3,7 @@ package com.ar.moviezone.entity;
 import java.time.LocalDate;
 
 import com.ar.moviezone.dto.BookingStatus;
-import com.ar.moviezone.dto.MovieDTO;
+
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -14,8 +14,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table
 public class Booking {
 	
 	@Id

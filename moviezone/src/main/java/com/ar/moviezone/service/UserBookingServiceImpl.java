@@ -3,6 +3,7 @@ package com.ar.moviezone.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +24,14 @@ public class UserBookingServiceImpl implements UserBookingService{
 	@Autowired
 	private BookingRepository bookingRepository;
 	
+	
 	@Override
 	public Integer bookMovie(MovieDTO movieDTO) {
 		return null;
 	}
 	
 	@Override
-	public List<BookingDTO> findBookingByUserEmailId(String emailId) throws MovieZoneException{
+	public List<BookingDTO> findBookingByUserEmailId(String emailId) throws MovieZoneException {
 		List<Booking> bookings = bookingRepository.findByUserEmailId(emailId);
 		
 		if (bookings.isEmpty())

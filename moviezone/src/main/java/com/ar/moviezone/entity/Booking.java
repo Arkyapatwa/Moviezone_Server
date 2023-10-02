@@ -36,8 +36,6 @@ public class Booking {
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="movieId")
 	private Movie movie;
-	
-	private String type;
 
 	public Integer getBookingId() {
 		return bookingId;
@@ -85,14 +83,6 @@ public class Booking {
 
 	public void setMovie(Movie movie) {
 		this.movie = movie;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 	
 	

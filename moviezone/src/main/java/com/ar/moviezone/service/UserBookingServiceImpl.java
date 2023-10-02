@@ -24,9 +24,13 @@ public class UserBookingServiceImpl implements UserBookingService{
 	@Autowired
 	private BookingRepository bookingRepository;
 	
+	@Autowired
+	private UserService userService;
+	
 	
 	@Override
-	public Integer bookMovie(MovieDTO movieDTO) {
+	public Integer bookMovie(String emailId, MovieDTO movieDTO) throws MovieZoneException {
+		
 		return null;
 	}
 	
@@ -43,10 +47,8 @@ public class UserBookingServiceImpl implements UserBookingService{
 			
 			BookingDTO bookingDTO = new BookingDTO();
 			bookingDTO.setBookingDate(booking.getBookingDate());
-			bookingDTO.setBookingId(booking.getBookingId());
 			bookingDTO.setBookingStatus(booking.getBookingStatus().toString());
 			bookingDTO.setTotalPrice(booking.getTotalPrice());
-			bookingDTO.setType(booking.getType());
 			bookingDTO.setUserEmailId(booking.getUserEmailId());
 			
 			MovieDTO movieDTO = new MovieDTO();

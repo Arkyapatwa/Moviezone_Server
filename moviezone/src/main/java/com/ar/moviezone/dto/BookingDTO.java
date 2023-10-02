@@ -10,7 +10,7 @@ public class BookingDTO {
 	private Double totalPrice;
 	private String bookingStatus;
 	private MovieDTO movie;
-	private String type;
+
 	
 	public Integer getBookingId() {
 		return bookingId;
@@ -48,13 +48,6 @@ public class BookingDTO {
 	public void setMovie(MovieDTO movie) {
 		this.movie = movie;
 	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
-	
-	
+		
 	
 }

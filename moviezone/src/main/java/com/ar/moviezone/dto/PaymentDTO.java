@@ -6,10 +6,16 @@ public class PaymentDTO {
 	
 	private Integer paymentId;
 	private TransactionStatus transactionStatus;
-	private BookingDTO booking;
 	private Double totalPrice;
 	private LocalDate paymentDate;
+	private MovieDTO movieDTO;
 	
+	public MovieDTO getMovieDTO() {
+		return movieDTO;
+	}
+	public void setMovieDTO(MovieDTO movieDTO) {
+		this.movieDTO = movieDTO;
+	}
 	public Integer getPaymentId() {
 		return paymentId;
 	}
@@ -21,12 +27,6 @@ public class PaymentDTO {
 	}
 	public void setTransactionStatus(TransactionStatus transactionStatus) {
 		this.transactionStatus = transactionStatus;
-	}
-	public BookingDTO getBooking() {
-		return booking;
-	}
-	public void setBooking(BookingDTO booking) {
-		this.booking = booking;
 	}
 	public Double getTotalPrice() {
 		return totalPrice;

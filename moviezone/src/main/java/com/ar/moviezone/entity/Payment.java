@@ -2,14 +2,18 @@ package com.ar.moviezone.entity;
 
 import java.time.LocalDate;
 
+
 import com.ar.moviezone.dto.TransactionStatus;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,10 +25,18 @@ public class Payment {
 	private Integer paymentId;
 	@Enumerated(EnumType.STRING)
 	private TransactionStatus transactionStatus;
-	private Integer bookingId;
 	private Double totalPrice;
 	private LocalDate paymentDate;
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="movieId")
+	private Movie movie;
 	
+	public Movie getMovie() {
+		return movie;
+	}
+	public void setMovie(Movie movie) {
+		this.movie = movie;
+	}
 	public Integer getPaymentId() {
 		return paymentId;
 	}
@@ -36,12 +48,6 @@ public class Payment {
 	}
 	public void setTransactionStatus(TransactionStatus transactionStatus) {
 		this.transactionStatus = transactionStatus;
-	}
-	public Integer getBookingId() {
-		return bookingId;
-	}
-	public void setBookingId(Integer bookingId) {
-		this.bookingId = bookingId;
 	}
 	public Double getTotalPrice() {
 		return totalPrice;

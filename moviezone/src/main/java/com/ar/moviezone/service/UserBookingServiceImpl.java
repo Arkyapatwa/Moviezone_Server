@@ -1,5 +1,6 @@
 package com.ar.moviezone.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,8 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ar.moviezone.dto.BookingDTO;
+import com.ar.moviezone.dto.BookingStatus;
 import com.ar.moviezone.dto.MovieDTO;
+import com.ar.moviezone.dto.PaymentDTO;
+import com.ar.moviezone.dto.TransactionStatus;
 import com.ar.moviezone.entity.Booking;
+import com.ar.moviezone.entity.Movie;
 import com.ar.moviezone.entity.User;
 import com.ar.moviezone.exception.MovieZoneException;
 import com.ar.moviezone.repository.BookingRepository;
@@ -29,9 +34,25 @@ public class UserBookingServiceImpl implements UserBookingService{
 	
 	
 	@Override
-	public Integer bookMovie(String emailId, MovieDTO movieDTO) throws MovieZoneException {
+	public Integer bookMovie(String emailId, PaymentDTO paymentDTO) throws MovieZoneException {
+		LocalDate bookingDate = LocalDate.now();
+		Movie movie = new Movie();
+		movie.setMovieId(paymentDTO.getMovieDTO().getMovieId());
+		movie.setLanguage(paymentDTO.getMovieDTO().getLanguage());
+		movie.setMovieLength(paymentDTO.getMovieDTO().getMovieLength());
+		movie.setMovieType(paymentDTO.getMovieDTO().getMovieType());
+		movie.setName(paymentDTO.getMovieDTO().getName());
 		
-		return null;
+		Booking booking = new Booking();
+		booking.setBookingId(null);
+		booking.setBookingStatus(paymentDTO.getTransactionStatus().equals(TransactionStatus.TRANSACTION_SUCCESS) ? BookingStatus.SUCCESSFUL : BookingStatus.FAILED);
+		booking.setBookingDate(bookingDate);
+		booking.setMovie(movie);
+		booking.setTotalPrice(paymentDTO.getTotalPrice());
+		booking.setUserEmailId(emailId);
+		
+		bookingRepository.save(booking);
+		return booking.getBookingId();
 	}
 	
 	@Override

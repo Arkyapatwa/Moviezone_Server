@@ -29,7 +29,7 @@ public class UserController {
 	
 	@PostMapping("/login")
 	public ResponseEntity<UserDTO> authenticateUser(@RequestBody UserCredentialsDTO userCredDTO) throws MovieZoneException {
-		UserDTO userDTOfetched = userService.userAuthentication(userCredDTO.getEmailId(), userCredDTO.getPassword());
+		UserDTO userDTOfetched = userService.userAuthentication(userCredDTO);
 		return new ResponseEntity<>(userDTOfetched, HttpStatus.OK);
 	}
 	

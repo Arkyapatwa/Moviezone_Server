@@ -26,7 +26,7 @@ public class Card {
 	
 	private String nameOnCard;
 	
-	private String customerEmailId;
+	private String userEmailId;
 	
 	public Integer getCardId() {
 		return cardId;
@@ -64,11 +64,12 @@ public class Card {
 	public void setNameOnCard(String nameOnCard) {
 		this.nameOnCard = nameOnCard;
 	}
-	public String getCustomerEmailId() {
-		return customerEmailId;
+	public String getUserEmailId() {
+		return userEmailId;
 	}
-	public void setCustomerEmailId(String customerEmailId) {
-		this.customerEmailId = customerEmailId;
+	public void setUserEmailId(String userEmailId) {
+		this.userEmailId = userEmailId;
 	}
+	
 	
 }

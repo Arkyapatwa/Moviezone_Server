@@ -2,7 +2,6 @@ package com.ar.moviezone.service;
 
 import java.util.List;
 
-import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,7 @@ public class PaymentServiceImpl implements PaymentService{
 	private PaymentRepository paymentRepository;
 	
 	@Override
-	public PaymentDTO authenticatePayment(String custEmailId, PaymentDTO paymentDTO) throws MovieZoneException{
+	public PaymentDTO authenticatePayment(String userEmailId, PaymentDTO paymentDTO) throws MovieZoneException{
 		return null;
 	}
 	

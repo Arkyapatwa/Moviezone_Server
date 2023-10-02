@@ -8,6 +8,6 @@ import com.ar.moviezone.entity.Card;
 
 public interface CardRepository extends CrudRepository<Card, Integer> {
 
-	List<Card> findByCustomerEmailId(String customerEmailId);
-	List<Card> findByCustomerEmailIdAndCardType(String customerEmailId, String cardType);
+	List<Card> findByCustomerEmailId(String userEmailId);
+	List<Card> findByCustomerEmailIdAndCardType(String userEmailId, String cardType);
 }

@@ -8,7 +8,7 @@ import com.ar.moviezone.exception.MovieZoneException;
 
 public interface PaymentService {
 	
-	PaymentDTO authenticatePayment(String custEmailId, PaymentDTO paymentDTO) throws MovieZoneException;
+	PaymentDTO authenticatePayment(String userEmailId, PaymentDTO paymentDTO) throws MovieZoneException;
 	CardDTO addNewCard(CardDTO cardDTO) throws MovieZoneException;
 	String deleteCard(CardDTO cardDTO) throws MovieZoneException;
 	List<CardDTO> getAllCustomerCard(String emailId) throws MovieZoneException;

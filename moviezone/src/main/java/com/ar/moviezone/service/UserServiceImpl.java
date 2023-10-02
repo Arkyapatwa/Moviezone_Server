@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ar.moviezone.dto.UserCredentialsDTO;
 import com.ar.moviezone.dto.UserDTO;
 import com.ar.moviezone.entity.User;
 import com.ar.moviezone.exception.MovieZoneException;
@@ -20,19 +21,19 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
 	
 	@Override
-	public UserDTO userAuthentication(String emailId, String password) throws MovieZoneException {
+	public UserDTO userAuthentication(UserCredentialsDTO userCredentialsDTO) throws MovieZoneException {
 		UserDTO userDTO = null;
-		Optional <User> userOp = userRepository.findById(emailId);
+		Optional <User> userOp = userRepository.findById(userCredentialsDTO.getEmailId());
 		User user = userOp.orElseThrow(()->new MovieZoneException("UserService.USER_NOT_AVAILABLE"));
 		
-		if (!password.equals(user.getPassword())) {
+		if (!userCredentialsDTO.getPassword().equals(user.getPassword())) {
 			throw new MovieZoneException("UserService.INVALID_CREDENTIALS");
 		}
 		
 		userDTO = new UserDTO();
 		userDTO.setName(user.getName());
-		userDTO.setEmailId(emailId);
-		userDTO.setPassword(password);
+		userDTO.setEmailId(userCredentialsDTO.getEmailId());
+		userDTO.setPassword(userCredentialsDTO.getPassword());
 		userDTO.setAddress(user.getAddress());
 		userDTO.setPhoneNumber(user.getPhoneNumber());
 		
@@ -73,6 +74,7 @@ public class UserServiceImpl implements UserService {
 				user.setName(userDTO.getName());
 				user.setPassword(userDTO.getPassword());
 				user.setPhoneNumber(userDTO.getPhoneNumber());
+				user.setRole("App_user");
 				userRepository.save(user);
 				
 				registeredEmailId = userDTO.getEmailId();

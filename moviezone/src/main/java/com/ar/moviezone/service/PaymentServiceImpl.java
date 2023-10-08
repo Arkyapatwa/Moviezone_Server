@@ -1,6 +1,7 @@
 package com.ar.moviezone.service;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,15 +56,62 @@ public class PaymentServiceImpl implements PaymentService{
 		return newCard.getCardId();
 	}
 	@Override
-	public String deleteCard(CardDTO cardDTO) throws MovieZoneException {
-		return null;
+	public String deleteCard(String userEmailId, CardDTO cardDTO) throws MovieZoneException {
+		List<Card> cards = cardRepository.findByUserEmailId(userEmailId);
+		
+		if (cards.isEmpty()) {
+			throw new MovieZoneException("PaymentService.NO_CARD_AVAILABLE");
+		}
+		Optional<Card> cardOp = cardRepository.findById(cardDTO.getCardId());
+		Card card = cardOp.orElseThrow(()-> new MovieZoneException("PaymentService.CARD_NOT_FOUND"));
+		
+		String response = "Card Deleted Successfully ending with" + card.getCardNumber().substring(12,16);
+		cardRepository.delete(card);
+		return response;
 	}
 	@Override
-	public List<CardDTO> getAllCustomerCard(String emailId) throws MovieZoneException {
-		return null;
+	public List<CardDTO> getAllUserCard(String userEmailId) throws MovieZoneException {
+		List<Card> cards = cardRepository.findByUserEmailId(userEmailId);
+		
+		if (cards.isEmpty()) {
+			throw new MovieZoneException("PaymentService.NO_CARD_AVAILABLE");
+		}
+		List<CardDTO> cardDTOs = new ArrayList<>();
+		for (Card card: cards) {
+			CardDTO cardDTO = new CardDTO();
+			cardDTO.setCardId(card.getCardId());
+			cardDTO.setCardNumber(card.getCardNumber());
+			cardDTO.setCardType(card.getCardType());
+			cardDTO.setExpiryDate(card.getExpiryDate());
+			cardDTO.setNameOnCard(card.getNameOnCard());
+			cardDTO.setUserEmailId(card.getUserEmailId());
+			
+			cardDTOs.add(cardDTO);
+		}
+		return cardDTOs;
+		
 	}
 	@Override
-	public List<CardDTO> getCardByEmailIdAndCardType(String emailId, String cardType) throws MovieZoneException {
-		return null;
+	public List<CardDTO> getCardByEmailIdAndCardType(String userEmailId, String cardType) throws MovieZoneException {
+		List<Card> cards = cardRepository.findByUserEmailId(userEmailId);
+		
+		if (cards.isEmpty()) {
+			throw new MovieZoneException("PaymentService.NO_CARD_AVAILABLE");
+		}
+		List<CardDTO> cardDTOs = new ArrayList<>();
+		for (Card card: cards) {
+			if (card.getCardType().equals(cardType)) {
+				CardDTO cardDTO = new CardDTO();
+				cardDTO.setCardId(card.getCardId());
+				cardDTO.setCardNumber(card.getCardNumber());
+				cardDTO.setCardType(card.getCardType());
+				cardDTO.setExpiryDate(card.getExpiryDate());
+				cardDTO.setNameOnCard(card.getNameOnCard());
+				cardDTO.setUserEmailId(card.getUserEmailId());
+				
+				cardDTOs.add(cardDTO);
+			}
+		}
+		return cardDTOs;
 	}
 }

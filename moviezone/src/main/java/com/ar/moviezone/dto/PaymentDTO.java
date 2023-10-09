@@ -9,7 +9,15 @@ public class PaymentDTO {
 	private Double totalPrice;
 	private LocalDate paymentDate;
 	private MovieDTO movieDTO;
+	private CardDTO cardDTO;
 	
+	
+	public CardDTO getCardDTO() {
+		return cardDTO;
+	}
+	public void setCardDTO(CardDTO cardDTO) {
+		this.cardDTO = cardDTO;
+	}
 	public MovieDTO getMovieDTO() {
 		return movieDTO;
 	}

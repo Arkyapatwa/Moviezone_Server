@@ -30,7 +30,17 @@ public class Payment {
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="movieId")
 	private Movie movie;
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="cardId")
+	private Card card;
 	
+	
+	public Card getCard() {
+		return card;
+	}
+	public void setCard(Card card) {
+		this.card = card;
+	}
 	public Movie getMovie() {
 		return movie;
 	}

@@ -1,6 +1,7 @@
 package com.ar.moviezone.service;
 
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -9,8 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ar.moviezone.dto.CardDTO;
+import com.ar.moviezone.dto.MovieDTO;
 import com.ar.moviezone.dto.PaymentDTO;
+import com.ar.moviezone.dto.TransactionStatus;
 import com.ar.moviezone.entity.Card;
+import com.ar.moviezone.entity.Movie;
+import com.ar.moviezone.entity.Payment;
 import com.ar.moviezone.exception.MovieZoneException;
 import com.ar.moviezone.repository.CardRepository;
 import com.ar.moviezone.repository.PaymentRepository;
@@ -28,9 +33,55 @@ public class PaymentServiceImpl implements PaymentService{
 	@Autowired
 	private CardRepository cardRepository;
 	
+	@Autowired
+	private UserBookingService userBookingService;
+	
 	@Override
-	public PaymentDTO authenticatePayment(String userEmailId, PaymentDTO paymentDTO) throws MovieZoneException{
-		return null;
+	public TransactionStatus authenticatePayment(String userEmailId, PaymentDTO paymentDTO) throws MovieZoneException, NoSuchAlgorithmException{
+		Optional<Card> cardOp = cardRepository.findById(paymentDTO.getCardDTO().getCardId());
+		Card card = cardOp.orElseThrow(()-> new MovieZoneException("PaymentService.CARD_NOT_FOUND"));
+		
+		TransactionStatus paymentResponse = null;
+		if (card.getCvv().equals(HashingUtility.hashValuesSHA256(paymentDTO.getCardDTO().getCvv()))) {
+			paymentResponse = TransactionStatus.TRANSACTION_SUCCESS;
+			addPayment(paymentDTO, paymentResponse);
+			userBookingService.bookMovie(userEmailId, paymentDTO);
+		} else {
+			paymentResponse = TransactionStatus.TRANSACTION_FAILED;
+			addPayment(paymentDTO, paymentResponse);
+		}
+		return paymentResponse;
+	}
+	
+	@Override
+	public Integer addPayment(PaymentDTO paymentDTO, TransactionStatus status) throws MovieZoneException, NoSuchAlgorithmException {
+		Card Card = new Card();
+		Card.setCardId(paymentDTO.getCardDTO().getCardId());
+		Card.setCardNumber(paymentDTO.getCardDTO().getCardNumber());
+		Card.setCardType(paymentDTO.getCardDTO().getCardType());
+		Card.setExpiryDate(paymentDTO.getCardDTO().getExpiryDate());
+		Card.setNameOnCard(paymentDTO.getCardDTO().getNameOnCard());
+		Card.setUserEmailId(paymentDTO.getCardDTO().getUserEmailId());
+		Card.setCvv(HashingUtility.hashValuesSHA256(paymentDTO.getCardDTO().getCvv()));
+		
+		Movie movie = new Movie();
+		movie.setLanguage(paymentDTO.getMovieDTO().getLanguage());
+		movie.setMovieId(paymentDTO.getMovieDTO().getMovieId());
+		movie.setMovieLength(paymentDTO.getMovieDTO().getMovieLength());
+		movie.setMovieType(paymentDTO.getMovieDTO().getMovieType());
+		movie.setName(paymentDTO.getMovieDTO().getName());
+		
+		Payment payment = new Payment();
+		payment.setCard(Card);
+		payment.setMovie(movie);
+		payment.setPaymentDate(LocalDate.now());
+		payment.setPaymentId(paymentDTO.getPaymentId());
+		payment.setTotalPrice(paymentDTO.getTotalPrice());
+		payment.setTransactionStatus(status);
+		
+		paymentRepository.save(payment);
+		
+		return payment.getPaymentId();
 	}
 	
 	@Override

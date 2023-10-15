@@ -7,10 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ar.moviezone.dto.BookingDTO;
+import com.ar.moviezone.dto.PaymentDTO;
 import com.ar.moviezone.exception.MovieZoneException;
 import com.ar.moviezone.service.UserBookingService;
 
@@ -28,6 +32,12 @@ public class BookingController {
 	public ResponseEntity<List<BookingDTO>> getBookingByEmailId(String emailId) throws MovieZoneException {
 		List<BookingDTO> bookingDTOList = userBookingService.findBookingByUserEmailId(emailId);
 		return new ResponseEntity<>(bookingDTOList, HttpStatus.OK);
+	}
+	
+	@PostMapping("/bookMovie/{emailId}")
+	public ResponseEntity<Integer> bookMovie(@PathVariable("emailId") String emailId, @RequestBody PaymentDTO paymentDTO) throws MovieZoneException {
+		Integer id = userBookingService.bookMovie(emailId, paymentDTO);
+		return new ResponseEntity<>(id, HttpStatus.OK);
 	}
 	
 }

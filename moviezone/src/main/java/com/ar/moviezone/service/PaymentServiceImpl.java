@@ -3,7 +3,9 @@ package com.ar.moviezone.service;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,24 +39,30 @@ public class PaymentServiceImpl implements PaymentService{
 	private UserBookingService userBookingService;
 	
 	@Override
-	public TransactionStatus authenticatePayment(String userEmailId, PaymentDTO paymentDTO) throws MovieZoneException, NoSuchAlgorithmException{
+	public Map<String,String> authenticatePayment(String userEmailId, PaymentDTO paymentDTO) throws MovieZoneException, NoSuchAlgorithmException{
 		Optional<Card> cardOp = cardRepository.findById(paymentDTO.getCardDTO().getCardId());
 		Card card = cardOp.orElseThrow(()-> new MovieZoneException("PaymentService.CARD_NOT_FOUND"));
 		
-		TransactionStatus paymentResponse = null;
+		String paymentResponse = null;
+		Integer BookingId = null;
+		Integer paymentId = null;
 		if (card.getCvv().equals(HashingUtility.hashValuesSHA256(paymentDTO.getCardDTO().getCvv()))) {
-			paymentResponse = TransactionStatus.TRANSACTION_SUCCESS;
-			addPayment(paymentDTO, paymentResponse);
-			userBookingService.bookMovie(userEmailId, paymentDTO);
+			paymentResponse = "TRANSACTION_SUCCESS";
+			paymentId = addPayment(paymentDTO, paymentResponse);
+			BookingId = userBookingService.bookMovie(userEmailId, paymentDTO);
 		} else {
-			paymentResponse = TransactionStatus.TRANSACTION_FAILED;
-			addPayment(paymentDTO, paymentResponse);
+			paymentResponse = "TRANSACTION_FAILED";
+			paymentId = addPayment(paymentDTO, paymentResponse);
 		}
-		return paymentResponse;
+		Map<String, String> response = new HashMap<>();
+		response.put("TransactionStatus", paymentResponse);
+		response.put("BookingId", Integer.toString(BookingId));
+		response.put("PaymentId", Integer.toString(paymentId));
+		return response;
 	}
 	
 	@Override
-	public Integer addPayment(PaymentDTO paymentDTO, TransactionStatus status) throws MovieZoneException, NoSuchAlgorithmException {
+	public Integer addPayment(PaymentDTO paymentDTO, String status) throws MovieZoneException, NoSuchAlgorithmException {
 		Card Card = new Card();
 		Card.setCardId(paymentDTO.getCardDTO().getCardId());
 		Card.setCardNumber(paymentDTO.getCardDTO().getCardNumber());
@@ -77,7 +85,11 @@ public class PaymentServiceImpl implements PaymentService{
 		payment.setPaymentDate(LocalDate.now());
 		payment.setPaymentId(paymentDTO.getPaymentId());
 		payment.setTotalPrice(paymentDTO.getTotalPrice());
-		payment.setTransactionStatus(status);
+		if (status.equals("TRANSACTION_SUCCESS")) {
+			payment.setTransactionStatus(TransactionStatus.TRANSACTION_SUCCESS);
+		} else {
+			payment.setTransactionStatus(TransactionStatus.TRANSACTION_FAILED);
+		}
 		
 		paymentRepository.save(payment);
 		

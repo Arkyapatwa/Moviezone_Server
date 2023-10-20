@@ -2,8 +2,9 @@ package com.ar.moviezone.controller;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Map;
 
-import org.hibernate.cfg.Environment;
+import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ar.moviezone.dto.CardDTO;
+import com.ar.moviezone.dto.PaymentDTO;
 import com.ar.moviezone.exception.MovieZoneException;
 import com.ar.moviezone.service.PaymentService;
 
@@ -51,5 +53,11 @@ public class PaymentController {
 	public ResponseEntity<List<CardDTO>> getCardsbyIdAndType(@PathVariable("emailId") String emailId, @PathVariable("type") String cardType) throws MovieZoneException {
 		List<CardDTO> cardDTOs = payService.getCardByEmailIdAndCardType(emailId, cardType);
 		return new ResponseEntity<>(cardDTOs, HttpStatus.OK);
+	}
+	
+	@PostMapping("/authenticate/{emailId}")
+	public ResponseEntity<Map<String, String>> authenticatePayment(@PathVariable("emailId") String emailId, @RequestBody PaymentDTO paymentDTO) throws MovieZoneException, NoSuchAlgorithmException {
+		Map<String, String> response = payService.authenticatePayment(emailId, paymentDTO);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }

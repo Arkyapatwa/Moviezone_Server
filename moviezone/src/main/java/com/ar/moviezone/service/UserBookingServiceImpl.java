@@ -3,6 +3,7 @@ package com.ar.moviezone.service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +69,7 @@ public class UserBookingServiceImpl implements UserBookingService{
 			
 			BookingDTO bookingDTO = new BookingDTO();
 			bookingDTO.setBookingDate(booking.getBookingDate());
-			bookingDTO.setBookingStatus(booking.getBookingStatus().toString());
+			bookingDTO.setBookingStatus(booking.getBookingStatus());
 			bookingDTO.setTotalPrice(booking.getTotalPrice());
 			bookingDTO.setUserEmailId(booking.getUserEmailId());
 			
@@ -85,6 +86,29 @@ public class UserBookingServiceImpl implements UserBookingService{
 		}
 		
 		return bookingDTOs;
+	}
+	
+	@Override
+	public BookingDTO getBookingById(Integer bookingId) throws MovieZoneException {
+		Optional<Booking> bookOp = bookingRepository.findById(bookingId);
+		Booking booking = bookOp.orElseThrow(()-> new MovieZoneException("UserBookingService.BOOKING_NOT_FOUND"));
+		
+		MovieDTO movieDTO = new MovieDTO();
+		movieDTO.setMovieId(booking.getMovie().getMovieId());
+		movieDTO.setLanguage(booking.getMovie().getLanguage());
+		movieDTO.setMovieLength(booking.getMovie().getMovieLength());
+		movieDTO.setMovieType(booking.getMovie().getMovieType());
+		movieDTO.setName(booking.getMovie().getName());
+		
+		BookingDTO bookingDTO = new BookingDTO();
+		bookingDTO.setBookingDate(booking.getBookingDate());
+		bookingDTO.setBookingId(bookingId);
+		bookingDTO.setBookingStatus(booking.getBookingStatus());
+		bookingDTO.setMovie(movieDTO);
+		bookingDTO.setTotalPrice(booking.getTotalPrice());
+		bookingDTO.setUserEmailId(booking.getUserEmailId());
+		
+		return bookingDTO;
 	}
 	
 }

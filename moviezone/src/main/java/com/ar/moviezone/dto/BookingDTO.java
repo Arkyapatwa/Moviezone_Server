@@ -8,7 +8,7 @@ public class BookingDTO {
 	private LocalDate bookingDate;
 	private String userEmailId;
 	private Double totalPrice;
-	private String bookingStatus;
+	private BookingStatus bookingStatus;
 	private MovieDTO movie;
 
 	
@@ -36,10 +36,11 @@ public class BookingDTO {
 	public void setTotalPrice(Double totalPrice) {
 		this.totalPrice = totalPrice;
 	}
-	public String getBookingStatus() {
+	
+	public BookingStatus getBookingStatus() {
 		return bookingStatus;
 	}
-	public void setBookingStatus(String bookingStatus) {
+	public void setBookingStatus(BookingStatus bookingStatus) {
 		this.bookingStatus = bookingStatus;
 	}
 	public MovieDTO getMovie() {

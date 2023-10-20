@@ -12,4 +12,6 @@ public interface UserBookingService {
 	Integer bookMovie(String emailId, PaymentDTO paymentDTO) throws MovieZoneException;
 	
 	List<BookingDTO> findBookingByUserEmailId(String emailId) throws MovieZoneException;
+	
+	BookingDTO getBookingById(Integer bookingId) throws MovieZoneException;
 }

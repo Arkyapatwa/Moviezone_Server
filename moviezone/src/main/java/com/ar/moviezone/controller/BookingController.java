@@ -40,4 +40,10 @@ public class BookingController {
 		return new ResponseEntity<>(id, HttpStatus.OK);
 	}
 	
+	@GetMapping("/bookMovie/{bookingId}")
+	public ResponseEntity<BookingDTO> getBookingById(@PathVariable("bookingId") Integer bookingId) throws MovieZoneException {
+		BookingDTO bookingDTO = userBookingService.getBookingById(bookingId);
+		return new ResponseEntity<>(bookingDTO, HttpStatus.OK);
+	}
+	
 }

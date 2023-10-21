@@ -22,7 +22,7 @@ public class UserMovieServiceImpl implements UserMovieService {
 	private MovieRepository movieRepository;
 	
 	@Override
-	public List<MovieDTO> getAllMovies(){
+	public List<MovieDTO> getAllMovies() throws MovieZoneException{
 		Iterable<Movie> movies = movieRepository.findAll();
 		List<MovieDTO> movieDTOs = new ArrayList<>();
 		
@@ -54,5 +54,17 @@ public class UserMovieServiceImpl implements UserMovieService {
 		movieDTO.setMovieType(movie.getMovieType());
 		
 		return movieDTO;
+	}
+	
+	@Override
+	public Integer addMovie(MovieDTO movieDTO) throws MovieZoneException {
+		Movie movie = new Movie();
+		movie.setLanguage(movieDTO.getLanguage());
+		movie.setMovieLength(movieDTO.getMovieLength());
+		movie.setName(movieDTO.getName());
+		movie.setMovieType(movieDTO.getMovieType());
+		
+		movieRepository.save(movie);
+		return movie.getMovieId();
 	}
 }

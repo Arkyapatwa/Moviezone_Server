@@ -8,7 +8,9 @@ import com.ar.moviezone.exception.MovieZoneException;
 
 public interface UserMovieService {
 	
-	List<MovieDTO> getAllMovies();
+	List<MovieDTO> getAllMovies() throws MovieZoneException;
 	
 	MovieDTO getMovieById(Integer movieId) throws MovieZoneException;
+	
+	Integer addMovie(MovieDTO movieDTO) throws MovieZoneException;
 }

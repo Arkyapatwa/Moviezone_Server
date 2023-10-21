@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,5 +38,11 @@ public class MovieController {
 		public ResponseEntity<MovieDTO> getMovieById(@PathVariable Integer movieId) throws MovieZoneException {
 			MovieDTO movieDTO = userMovieService.getMovieById(movieId);
 			return new ResponseEntity<>(movieDTO, HttpStatus.OK);
+		}
+		
+		@PostMapping("/addMovie")
+		public ResponseEntity<Integer> addMovie(@RequestBody MovieDTO movieDTO) throws MovieZoneException {
+			Integer movieId = userMovieService.addMovie(movieDTO);
+			return new ResponseEntity<>(movieId, HttpStatus.OK);
 		}
 }

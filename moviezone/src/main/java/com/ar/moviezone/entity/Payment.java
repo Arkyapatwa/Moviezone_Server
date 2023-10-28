@@ -27,25 +27,22 @@ public class Payment {
 	private TransactionStatus transactionStatus;
 	private Double totalPrice;
 	private LocalDate paymentDate;
-	@OneToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="movieId")
-	private Movie movie;
-	@OneToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="cardId")
-	private Card card;
+	private Integer movieId;
+	private Integer cardId;
 	
 	
-	public Card getCard() {
-		return card;
+	
+	public Integer getMovieId() {
+		return movieId;
 	}
-	public void setCard(Card card) {
-		this.card = card;
+	public void setMovieId(Integer movieId) {
+		this.movieId = movieId;
 	}
-	public Movie getMovie() {
-		return movie;
+	public Integer getCardId() {
+		return cardId;
 	}
-	public void setMovie(Movie movie) {
-		this.movie = movie;
+	public void setCardId(Integer cardId) {
+		this.cardId = cardId;
 	}
 	public Integer getPaymentId() {
 		return paymentId;

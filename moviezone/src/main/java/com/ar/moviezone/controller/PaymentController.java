@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ar.moviezone.dto.CardDTO;
 import com.ar.moviezone.dto.PaymentDTO;
+import com.ar.moviezone.dto.PaymentWrapperDTO;
 import com.ar.moviezone.exception.MovieZoneException;
 import com.ar.moviezone.service.PaymentService;
 
@@ -32,9 +33,9 @@ public class PaymentController {
 	private Environment environment;
 	
 	@PostMapping("/addCard/{emailId}")
-	public ResponseEntity<Integer> addNewCard(@PathVariable("emailId") String emailId, @RequestBody CardDTO cardDTO) throws MovieZoneException, NoSuchAlgorithmException {
-		Integer id = payService.addNewCard(emailId, cardDTO);
-		return new ResponseEntity<>(id, HttpStatus.OK);
+	public ResponseEntity<String> addNewCard(@PathVariable("emailId") String emailId, @RequestBody CardDTO cardDTO) throws MovieZoneException, NoSuchAlgorithmException {
+		String response = payService.addNewCard(emailId, cardDTO);
+		return new ResponseEntity<>(response, HttpStatus.OK); // proper message required
 	}
 	
 	@DeleteMapping("/deleteCard/{emailId}")
@@ -56,8 +57,8 @@ public class PaymentController {
 	}
 	
 	@PostMapping("/authenticate/{emailId}")
-	public ResponseEntity<Map<String, String>> authenticatePayment(@PathVariable("emailId") String emailId, @RequestBody PaymentDTO paymentDTO) throws MovieZoneException, NoSuchAlgorithmException {
-		Map<String, String> response = payService.authenticatePayment(emailId, paymentDTO);
+	public ResponseEntity<Map<String, String>> authenticatePayment(@PathVariable("emailId") String emailId, @RequestBody PaymentWrapperDTO paymentWDTO) throws MovieZoneException, NoSuchAlgorithmException {
+		Map<String, String> response = payService.authenticatePayment(emailId, paymentWDTO.getPaymentDTO(), paymentWDTO.getCardDTO(), paymentWDTO.getMovieDTO());
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }

@@ -28,7 +28,7 @@ public class UserController {
 	@Autowired
 	private Environment environment;
 	
-	@PostMapping("/login")
+	@PostMapping("/user/login")
 	public ResponseEntity<UserDTO> authenticateUser(@RequestBody UserCredentialsDTO userCredDTO) throws MovieZoneException {
 		UserDTO userDTOfetched = userService.userAuthentication(userCredDTO);
 		return new ResponseEntity<>(userDTOfetched, HttpStatus.OK);
@@ -40,10 +40,9 @@ public class UserController {
 		return new ResponseEntity<>(userDTOfetched, HttpStatus.OK);
 	}
 	
-	@PostMapping("/register")
+	@PostMapping("/user/register")
 	public ResponseEntity<String> resgisterUser(@RequestBody UserDTO userDTO) throws MovieZoneException{
 		String registerEmailId = userService.registerNewUser(userDTO);
-		registerEmailId = environment.getProperty("") + registerEmailId;
 		return new ResponseEntity<>(registerEmailId, HttpStatus.OK);
 	}
 	

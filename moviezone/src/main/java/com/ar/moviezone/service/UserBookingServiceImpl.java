@@ -9,8 +9,11 @@ import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ar.moviezone.dto.CardDTO;
+import com.ar.moviezone.dto.MovieDTO;
 import com.ar.moviezone.dto.BookingDTO;
 import com.ar.moviezone.dto.BookingStatus;
+import com.ar.moviezone.dto.CardDTO;
 import com.ar.moviezone.dto.MovieDTO;
 import com.ar.moviezone.dto.PaymentDTO;
 import com.ar.moviezone.dto.TransactionStatus;
@@ -31,22 +34,28 @@ public class UserBookingServiceImpl implements UserBookingService{
 	private BookingRepository bookingRepository;
 	
 	@Autowired
+	private MovieRepository movieRepository;
+	
+	@Autowired
 	private UserService userService;
 	
 	
 	@Override
-	public Integer bookMovie(String emailId, PaymentDTO paymentDTO) throws MovieZoneException {
+	public Integer bookMovie(String emailId, PaymentDTO paymentDTO, CardDTO cardDTO, MovieDTO movieDTO) throws MovieZoneException {
 		LocalDate bookingDate = LocalDate.now();
-		Movie movie = new Movie();
-		movie.setMovieId(paymentDTO.getMovieDTO().getMovieId());
-		movie.setLanguage(paymentDTO.getMovieDTO().getLanguage());
-		movie.setMovieLength(paymentDTO.getMovieDTO().getMovieLength());
-		movie.setMovieType(paymentDTO.getMovieDTO().getMovieType());
-		movie.setName(paymentDTO.getMovieDTO().getName());
+//		Movie movie = new Movie();
+//		movie.setMovieId(movieDTO.getMovieId());
+//		movie.setLanguage(movieDTO.getLanguage());
+//		movie.setMovieLength(movieDTO.getMovieLength());
+//		movie.setMovieType(movieDTO.getMovieType());
+//		movie.setName(movieDTO.getName());
+		
+		Optional<Movie> movieOp = movieRepository.findById(movieDTO.getMovieId());
+		Movie movie = movieOp.orElseThrow(()-> new MovieZoneException(""));
 		
 		Booking booking = new Booking();
-		booking.setBookingId(null);
-		booking.setBookingStatus(paymentDTO.getTransactionStatus().equals(TransactionStatus.TRANSACTION_SUCCESS) ? BookingStatus.SUCCESSFUL : BookingStatus.FAILED);
+//		booking.setBookingStatus(paymentDTO.getTransactionStatus().equals(TransactionStatus.TRANSACTION_SUCCESS) ? BookingStatus.SUCCESSFUL : BookingStatus.FAILED);
+		booking.setBookingStatus(BookingStatus.SUCCESSFUL);
 		booking.setBookingDate(bookingDate);
 		booking.setMovie(movie);
 		booking.setTotalPrice(paymentDTO.getTotalPrice());
@@ -68,6 +77,7 @@ public class UserBookingServiceImpl implements UserBookingService{
 		for (Booking booking : bookings) {
 			
 			BookingDTO bookingDTO = new BookingDTO();
+			bookingDTO.setBookingId(booking.getBookingId());
 			bookingDTO.setBookingDate(booking.getBookingDate());
 			bookingDTO.setBookingStatus(booking.getBookingStatus());
 			bookingDTO.setTotalPrice(booking.getTotalPrice());

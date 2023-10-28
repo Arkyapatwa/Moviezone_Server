@@ -39,20 +39,21 @@ public class PaymentServiceImpl implements PaymentService{
 	private UserBookingService userBookingService;
 	
 	@Override
-	public Map<String,String> authenticatePayment(String userEmailId, PaymentDTO paymentDTO) throws MovieZoneException, NoSuchAlgorithmException{
-		Optional<Card> cardOp = cardRepository.findById(paymentDTO.getCardDTO().getCardId());
+	public Map<String,String> authenticatePayment(String userEmailId, PaymentDTO paymentDTO, CardDTO cardDTO, MovieDTO movieDTO) throws MovieZoneException, NoSuchAlgorithmException{
+		Optional<Card> cardOp = cardRepository.findById(cardDTO.getCardId());
 		Card card = cardOp.orElseThrow(()-> new MovieZoneException("PaymentService.CARD_NOT_FOUND"));
 		
 		String paymentResponse = null;
 		Integer BookingId = null;
 		Integer paymentId = null;
-		if (card.getCvv().equals(HashingUtility.hashValuesSHA256(paymentDTO.getCardDTO().getCvv()))) {
+		if (card.getCvv().equals(HashingUtility.hashValuesSHA256(cardDTO.getCvv()))) {
 			paymentResponse = "TRANSACTION_SUCCESS";
 			paymentId = addPayment(paymentDTO, paymentResponse);
-			BookingId = userBookingService.bookMovie(userEmailId, paymentDTO);
+			BookingId = userBookingService.bookMovie(userEmailId, paymentDTO, cardDTO, movieDTO);
 		} else {
 			paymentResponse = "TRANSACTION_FAILED";
 			paymentId = addPayment(paymentDTO, paymentResponse);
+			throw new MovieZoneException("PaymentService.WRONG_CVV");
 		}
 		Map<String, String> response = new HashMap<>();
 		response.put("TransactionStatus", paymentResponse);
@@ -63,25 +64,10 @@ public class PaymentServiceImpl implements PaymentService{
 	
 	@Override
 	public Integer addPayment(PaymentDTO paymentDTO, String status) throws MovieZoneException, NoSuchAlgorithmException {
-		Card Card = new Card();
-		Card.setCardId(paymentDTO.getCardDTO().getCardId());
-		Card.setCardNumber(paymentDTO.getCardDTO().getCardNumber());
-		Card.setCardType(paymentDTO.getCardDTO().getCardType());
-		Card.setExpiryDate(paymentDTO.getCardDTO().getExpiryDate());
-		Card.setNameOnCard(paymentDTO.getCardDTO().getNameOnCard());
-		Card.setUserEmailId(paymentDTO.getCardDTO().getUserEmailId());
-		Card.setCvv(HashingUtility.hashValuesSHA256(paymentDTO.getCardDTO().getCvv()));
-		
-		Movie movie = new Movie();
-		movie.setLanguage(paymentDTO.getMovieDTO().getLanguage());
-		movie.setMovieId(paymentDTO.getMovieDTO().getMovieId());
-		movie.setMovieLength(paymentDTO.getMovieDTO().getMovieLength());
-		movie.setMovieType(paymentDTO.getMovieDTO().getMovieType());
-		movie.setName(paymentDTO.getMovieDTO().getName());
 		
 		Payment payment = new Payment();
-		payment.setCard(Card);
-		payment.setMovie(movie);
+		payment.setCardId(paymentDTO.getCardId());
+		payment.setMovieId(paymentDTO.getMovieId());
 		payment.setPaymentDate(LocalDate.now());
 		payment.setPaymentId(paymentDTO.getPaymentId());
 		payment.setTotalPrice(paymentDTO.getTotalPrice());
@@ -97,26 +83,32 @@ public class PaymentServiceImpl implements PaymentService{
 	}
 	
 	@Override
-	public Integer addNewCard(String userEmailId, CardDTO cardDTO) throws MovieZoneException, NoSuchAlgorithmException {
+	public String addNewCard(String userEmailId, CardDTO cardDTO) throws MovieZoneException, NoSuchAlgorithmException {
 		Card availableCard = cardRepository.findByUserEmailIdAndCardNumber(userEmailId, cardDTO.getCardNumber());
-		
-		if (availableCard.getCardNumber().equals(cardDTO.getCardNumber())) {
-			throw new MovieZoneException("PaymentService.CARD_ALREADY_AVAILABLE");
-		}
-		
-		String hashedValueCvv = HashingUtility.hashValuesSHA256(cardDTO.getCvv());
-		
 		Card newCard = new Card();
-		newCard.setCardId(cardDTO.getCardId());
-		newCard.setCardNumber(cardDTO.getCardNumber());
-		newCard.setCardType(cardDTO.getCardType());
-		newCard.setExpiryDate(cardDTO.getExpiryDate());
-		newCard.setNameOnCard(cardDTO.getNameOnCard());
-		newCard.setUserEmailId(userEmailId);
-		newCard.setCvv(hashedValueCvv);
+		try {
+			if (availableCard.getCardNumber().equals(cardDTO.getCardNumber())) {
+				throw new MovieZoneException("PaymentService.CARD_ALREADY_AVAILABLE");
+			}
+			
+		} catch(NullPointerException e) {
+			String hashedValueCvv = HashingUtility.hashValuesSHA256(cardDTO.getCvv());
+			
+			
+			newCard.setCardId(cardDTO.getCardId());
+			newCard.setCardNumber(cardDTO.getCardNumber());
+			newCard.setCardType(cardDTO.getCardType());
+			newCard.setExpiryDate(cardDTO.getExpiryDate());
+			newCard.setNameOnCard(cardDTO.getNameOnCard());
+			newCard.setUserEmailId(userEmailId);
+			newCard.setCvv(hashedValueCvv);
+			
+			cardRepository.save(newCard);
+			
+		}
+		String response = "Card Added Successfully ending with " + cardDTO.getCardNumber().substring(12,16);
+		return response;
 		
-		cardRepository.save(newCard);
-		return newCard.getCardId();
 	}
 	@Override
 	public String deleteCard(String userEmailId, CardDTO cardDTO) throws MovieZoneException {
@@ -128,7 +120,7 @@ public class PaymentServiceImpl implements PaymentService{
 		Optional<Card> cardOp = cardRepository.findById(cardDTO.getCardId());
 		Card card = cardOp.orElseThrow(()-> new MovieZoneException("PaymentService.CARD_NOT_FOUND"));
 		
-		String response = "Card Deleted Successfully ending with" + card.getCardNumber().substring(12,16);
+		String response = "Card Deleted Successfully ending with " + card.getCardNumber().substring(12,16);
 		cardRepository.delete(card);
 		return response;
 	}
@@ -148,6 +140,7 @@ public class PaymentServiceImpl implements PaymentService{
 			cardDTO.setExpiryDate(card.getExpiryDate());
 			cardDTO.setNameOnCard(card.getNameOnCard());
 			cardDTO.setUserEmailId(card.getUserEmailId());
+			cardDTO.setCvv(card.getCvv());
 			
 			cardDTOs.add(cardDTO);
 		}

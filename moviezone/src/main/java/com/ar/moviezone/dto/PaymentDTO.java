@@ -8,21 +8,24 @@ public class PaymentDTO {
 	private TransactionStatus transactionStatus;
 	private Double totalPrice;
 	private LocalDate paymentDate;
-	private MovieDTO movieDTO;
-	private CardDTO cardDTO;
+	private Integer movieId;
+	private Integer cardId;
 	
 	
-	public CardDTO getCardDTO() {
-		return cardDTO;
+	
+	
+	
+	public Integer getMovieId() {
+		return movieId;
 	}
-	public void setCardDTO(CardDTO cardDTO) {
-		this.cardDTO = cardDTO;
+	public void setMovieId(Integer movieId) {
+		this.movieId = movieId;
 	}
-	public MovieDTO getMovieDTO() {
-		return movieDTO;
+	public Integer getCardId() {
+		return cardId;
 	}
-	public void setMovieDTO(MovieDTO movieDTO) {
-		this.movieDTO = movieDTO;
+	public void setCardId(Integer cardId) {
+		this.cardId = cardId;
 	}
 	public Integer getPaymentId() {
 		return paymentId;

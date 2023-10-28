@@ -41,8 +41,8 @@ public class MovieController {
 		}
 		
 		@PostMapping("/addMovie")
-		public ResponseEntity<Integer> addMovie(@RequestBody MovieDTO movieDTO) throws MovieZoneException {
+		public ResponseEntity<String> addMovie(@RequestBody MovieDTO movieDTO) throws MovieZoneException {
 			Integer movieId = userMovieService.addMovie(movieDTO);
-			return new ResponseEntity<>(movieId, HttpStatus.OK);
+			return new ResponseEntity<>("Added Successfully", HttpStatus.OK);
 		}
 }

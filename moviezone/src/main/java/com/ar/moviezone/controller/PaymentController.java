@@ -58,7 +58,7 @@ public class PaymentController {
 	
 	@PostMapping("/authenticate/{emailId}")
 	public ResponseEntity<Map<String, String>> authenticatePayment(@PathVariable("emailId") String emailId, @RequestBody PaymentWrapperDTO paymentWDTO) throws MovieZoneException, NoSuchAlgorithmException {
-		Map<String, String> response = payService.authenticatePayment(emailId, paymentWDTO.getPaymentDTO(), paymentWDTO.getCardDTO(), paymentWDTO.getMovieDTO());
+		Map<String, String> response = payService.authenticatePayment(emailId, paymentWDTO);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }

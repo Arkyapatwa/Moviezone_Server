@@ -1,6 +1,8 @@
 package com.ar.moviezone.entity;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 import com.ar.moviezone.dto.BookingStatus;
 
@@ -34,8 +36,20 @@ public class Booking {
 	private BookingStatus bookingStatus;
 	
 	@OneToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="movieId")
-	private Movie movie;
+	@JoinColumn(name="showId")
+	private Show show;
+	
+	private List<Map<String, Integer>> seats;
+	
+	
+
+	public List<Map<String, Integer>> getSeats() {
+		return seats;
+	}
+
+	public void setSeats(List<Map<String, Integer>> seats) {
+		this.seats = seats;
+	}
 
 	public Integer getBookingId() {
 		return bookingId;
@@ -77,13 +91,14 @@ public class Booking {
 		this.bookingStatus = bookingStatus;
 	}
 
-	public Movie getMovie() {
-		return movie;
+	public Show getShow() {
+		return show;
 	}
 
-	public void setMovie(Movie movie) {
-		this.movie = movie;
+	public void setShow(Show show) {
+		this.show = show;
 	}
+
 	
 	
 }

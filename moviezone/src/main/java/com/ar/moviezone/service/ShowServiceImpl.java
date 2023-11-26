@@ -28,6 +28,7 @@ public class ShowServiceImpl implements ShowService {
 		show.setMovieId(show.getMovieId());
 		show.setShowTime(showDTO.getShowTime());
 		show.setTheatreId(showDTO.getTheatreId());
+		show.setScreenId(showDTO.getScreenId());
 		
 		showRepository.save(show);
 		String response = "ShowTime Added Successfully with Time" + show.getShowTime();

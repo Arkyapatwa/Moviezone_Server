@@ -8,6 +8,7 @@ public class ShowDTO {
 	private LocalDate showTime;
 	private Integer movieId;
 	private Integer theatreId;
+	private Integer screenId;
 	private Integer availableTickets;
 	public Integer getShowId() {
 		return showId;
@@ -38,6 +39,12 @@ public class ShowDTO {
 	}
 	public void setAvailableTickets(Integer availableTickets) {
 		this.availableTickets = availableTickets;
+	}
+	public Integer getScreenId() {
+		return screenId;
+	}
+	public void setScreenId(Integer screenId) {
+		this.screenId = screenId;
 	}
 	
 	

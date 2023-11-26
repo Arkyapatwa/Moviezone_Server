@@ -12,11 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ar.moviezone.dto.CardDTO;
-import com.ar.moviezone.dto.MovieDTO;
 import com.ar.moviezone.dto.PaymentDTO;
+import com.ar.moviezone.dto.PaymentWrapperDTO;
+import com.ar.moviezone.dto.ShowDTO;
 import com.ar.moviezone.dto.TransactionStatus;
 import com.ar.moviezone.entity.Card;
-import com.ar.moviezone.entity.Movie;
 import com.ar.moviezone.entity.Payment;
 import com.ar.moviezone.exception.MovieZoneException;
 import com.ar.moviezone.repository.CardRepository;
@@ -39,7 +39,11 @@ public class PaymentServiceImpl implements PaymentService{
 	private UserBookingService userBookingService;
 	
 	@Override
-	public Map<String,String> authenticatePayment(String userEmailId, PaymentDTO paymentDTO, CardDTO cardDTO, MovieDTO movieDTO) throws MovieZoneException, NoSuchAlgorithmException{
+	public Map<String,String> authenticatePayment(String userEmailId, PaymentWrapperDTO paymentWrapperDTO) throws MovieZoneException, NoSuchAlgorithmException{
+		PaymentDTO paymentDTO = paymentWrapperDTO.getPaymentDTO();
+		CardDTO cardDTO = paymentWrapperDTO.getCardDTO();
+		ShowDTO showDTO = paymentWrapperDTO.getShowDTO();
+		
 		Optional<Card> cardOp = cardRepository.findById(cardDTO.getCardId());
 		Card card = cardOp.orElseThrow(()-> new MovieZoneException("PaymentService.CARD_NOT_FOUND"));
 		
@@ -49,7 +53,7 @@ public class PaymentServiceImpl implements PaymentService{
 		if (card.getCvv().equals(HashingUtility.hashValuesSHA256(cardDTO.getCvv()))) {
 			paymentResponse = "TRANSACTION_SUCCESS";
 			paymentId = addPayment(paymentDTO, paymentResponse);
-			BookingId = userBookingService.bookMovie(userEmailId, paymentDTO, cardDTO, movieDTO);
+			BookingId = userBookingService.bookMovie(userEmailId, paymentDTO, cardDTO, showDTO, paymentWrapperDTO.getSeats());
 		} else {
 			paymentResponse = "TRANSACTION_FAILED";
 			paymentId = addPayment(paymentDTO, paymentResponse);
@@ -67,7 +71,7 @@ public class PaymentServiceImpl implements PaymentService{
 		
 		Payment payment = new Payment();
 		payment.setCardId(paymentDTO.getCardId());
-		payment.setMovieId(paymentDTO.getMovieId());
+		payment.setShowId(paymentDTO.getShowId());
 		payment.setPaymentDate(LocalDate.now());
 		payment.setPaymentId(paymentDTO.getPaymentId());
 		payment.setTotalPrice(paymentDTO.getTotalPrice());

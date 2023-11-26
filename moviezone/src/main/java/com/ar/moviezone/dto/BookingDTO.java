@@ -1,6 +1,8 @@
 package com.ar.moviezone.dto;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 public class BookingDTO {
 	
@@ -9,9 +11,16 @@ public class BookingDTO {
 	private String userEmailId;
 	private Double totalPrice;
 	private BookingStatus bookingStatus;
-	private MovieDTO movie;
+	private ShowDTO showDTO;
+	private List<Map<String, Integer>> seats;
 
 	
+	public List<Map<String, Integer>> getSeats() {
+		return seats;
+	}
+	public void setSeats(List<Map<String, Integer>> seats) {
+		this.seats = seats;
+	}
 	public Integer getBookingId() {
 		return bookingId;
 	}
@@ -43,12 +52,13 @@ public class BookingDTO {
 	public void setBookingStatus(BookingStatus bookingStatus) {
 		this.bookingStatus = bookingStatus;
 	}
-	public MovieDTO getMovie() {
-		return movie;
+	public ShowDTO getShowDTO() {
+		return showDTO;
 	}
-	public void setMovie(MovieDTO movie) {
-		this.movie = movie;
+	public void setShowDTO(ShowDTO showDTO) {
+		this.showDTO = showDTO;
 	}
+
 		
 	
 }

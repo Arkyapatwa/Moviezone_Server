@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import com.ar.moviezone.dto.BookingDTO;
 import com.ar.moviezone.dto.CardDTO;
 import com.ar.moviezone.dto.MovieDTO;
 import com.ar.moviezone.dto.PaymentDTO;
+import com.ar.moviezone.dto.ShowDTO;
 import com.ar.moviezone.exception.MovieZoneException;
 import com.ar.moviezone.service.UserBookingService;
 
@@ -36,9 +38,9 @@ public class BookingController {
 		return new ResponseEntity<>(bookingDTOList, HttpStatus.OK);
 	}
 	
-	@PostMapping("/bookMovie/{emailId}")
-	public ResponseEntity<Integer> bookMovie(@PathVariable("emailId") String emailId, @RequestBody PaymentDTO paymentDTO,  CardDTO cardDTO, MovieDTO movieDTO) throws MovieZoneException {
-		Integer id = userBookingService.bookMovie(emailId, paymentDTO, cardDTO, movieDTO);
+	@PutMapping("/CancelBookMovie/{emailId}")
+	public ResponseEntity<Integer> bookMovie(@PathVariable("emailId") String emailId, Integer bookingId) throws MovieZoneException {
+		Integer id = userBookingService.cancelBookMovie(emailId, bookingId);
 		return new ResponseEntity<>(id, HttpStatus.OK);
 	}
 	

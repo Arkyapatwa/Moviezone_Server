@@ -76,12 +76,13 @@ public class ScreenServiceImpl implements ScreenService {
 		Optional<Screen> screenOp = screenRepository.findById(ScreenId);
 		Screen screen = screenOp.orElseThrow(()-> new MovieZoneException("ScreenService.SCREEN_NOT_FOUND"));
 		
-		Integer[][] seatingArrangement = screen.getSeatingArrangement();
+		String[] seatingArrangement = screen.getSeatingArrangement();
 		
 		for (Map<String, Integer> seat: seatList) {
 			Integer row = seat.get("rowIndex");
 			Integer col = seat.get("colIndex"); 
-			seatingArrangement[row][col] = 1;
+			Integer rowLength  = seatingArrangement[row].length();
+			seatingArrangement[row] = seatingArrangement[row].substring(0, col) + "1" + seatingArrangement[row].substring(col+1, rowLength);
 		}
 		
 		screen.setSeatingArrangement(seatingArrangement);
@@ -91,16 +92,29 @@ public class ScreenServiceImpl implements ScreenService {
 	}
 	
 	@Override
-	public Boolean cancelSeat(List<Map<String, Integer>> seatList, Integer ScreenId) throws MovieZoneException {
+	public Boolean cancelSeat(String[] seatList, Integer ScreenId) throws MovieZoneException {
 		Optional<Screen> screenOp = screenRepository.findById(ScreenId);
 		Screen screen = screenOp.orElseThrow(()-> new MovieZoneException("ScreenService.SCREEN_NOT_FOUND"));
 		
-		Integer[][] seatingArrangement = screen.getSeatingArrangement();
-		
-		for (Map<String, Integer> seat: seatList) {
-			Integer row = seat.get("rowIndex");
-			Integer col = seat.get("colIndex"); 
-			seatingArrangement[row][col] = 0;
+		String[] seatingArrangement = screen.getSeatingArrangement();
+		String val = "";
+		Integer row = 0;
+		Integer col = 0;
+		for (String seat: seatList) {
+			for (int i = 0 ; i < seat.length() ; i++) {
+				if (seat.charAt(i) !='R' && seat.charAt(i) !='C') {
+					val += seat.charAt(i);
+				} else {
+					if (seat.charAt(i) =='R') {
+						row = Integer.parseInt(val);
+					} else {
+						col = Integer.parseInt(val);
+					}
+					val = "";
+				}
+			}
+			Integer rowLength  = seatingArrangement[row].length();
+			seatingArrangement[row] = seatingArrangement[row].substring(0, col) + "0" + seatingArrangement[row].substring(col+1, rowLength);
 		}
 		
 		screen.setSeatingArrangement(seatingArrangement);

@@ -12,5 +12,5 @@ public interface ScreenService {
 	List<ScreenDTO> getAllScreens(Integer theatreId) throws MovieZoneException;
 	ScreenDTO getScreenById(Integer ScreenId) throws MovieZoneException;
 	Boolean updateSeat(List<Map<String, Integer>> seatList, Integer ScreenId) throws MovieZoneException;
-	Boolean cancelSeat(List<Map<String, Integer>> seatList, Integer ScreenId) throws MovieZoneException;
+	Boolean cancelSeat(String[] seatList, Integer ScreenId) throws MovieZoneException;
 }

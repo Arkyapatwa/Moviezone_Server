@@ -14,8 +14,8 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class ShowServiceImpl implements ShowService {
 
-	@Autowired
-	private ShowService showService;
+//	@Autowired
+//	private ShowService showService;
 	
 	@Autowired
 	private ShowRepository showRepository;

@@ -14,8 +14,8 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class TheatreServiceImpl implements TheatreService {
 
-	@Autowired
-	private TheatreService theatreService;
+//	@Autowired
+//	private TheatreService theatreService;
 	
 	@Autowired
 	private TheatreRepository theatreRepository;

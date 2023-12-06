@@ -7,7 +7,7 @@ public class ScreenDTO {
 	private Integer screenId;
 	private Integer seatingCapacity; // total seat capacity of the following screen
 	private String screenName;
-	private Integer[][] seatingArrangement; // matrix of seats which will show which particular seat is available
+	private String[] seatingArrangement; // matrix of seats which will show which particular seat is available
 	private Integer theatreId;
 	public Integer getScreenId() {
 		return screenId;
@@ -27,10 +27,10 @@ public class ScreenDTO {
 	public void setScreenName(String screenName) {
 		this.screenName = screenName;
 	}
-	public Integer[][] getSeatingArrangement() {
+	public String[] getSeatingArrangement() {
 		return seatingArrangement;
 	}
-	public void setSeatingArrangement(Integer[][] seatingArrangement) {
+	public void setSeatingArrangement(String[] seatingArrangement) {
 		this.seatingArrangement = seatingArrangement;
 	}
 	public Integer getTheatreId() {

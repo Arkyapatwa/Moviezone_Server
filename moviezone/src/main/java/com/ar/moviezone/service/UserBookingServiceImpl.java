@@ -61,7 +61,11 @@ public class UserBookingServiceImpl implements UserBookingService{
 		Integer screenId = showDTO.getScreenId();
 		
 		Boolean seatBookedSuccessfully = screenService.updateSeat(seats, screenId);
-		booking.setSeats(seats);
+		String[] seatsList = new String[seats.size()];
+		for (int i = 0 ; i < seats.size() ; i++) {
+			seatsList[i] = seats.get(i).get("rowIndex")+ "R" + seats.get(i).get("colIndex") + "C";
+		}
+		booking.setSeats(seatsList);
 		
 		bookingRepository.save(booking);
 		return booking.getBookingId();
@@ -131,7 +135,7 @@ public class UserBookingServiceImpl implements UserBookingService{
 		Booking booking = bookOp.orElseThrow(()-> new MovieZoneException("UserBookingService.BOOKING_NOT_FOUND"));
 		
 		Integer screenId = booking.getShow().getScreenId();
-		List<Map<String, Integer>> seats = booking.getSeats();
+		String[] seats = booking.getSeats();
 		
 		Boolean seatBookedSuccessfully = screenService.cancelSeat(seats, screenId);
 		booking.setBookingStatus(BookingStatus.CANCELLED);

@@ -39,15 +39,15 @@ public class Booking {
 	@JoinColumn(name="showId")
 	private Show show;
 	
-	private List<Map<String, Integer>> seats;
+	private String[] seats; 
 	
 	
 
-	public List<Map<String, Integer>> getSeats() {
+	public String[] getSeats() {
 		return seats;
 	}
 
-	public void setSeats(List<Map<String, Integer>> seats) {
+	public void setSeats(String[] seats) {
 		this.seats = seats;
 	}
 
